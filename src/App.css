@@ -1,0 +1,17 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.game-container {
+  padding: 0 354px;
+}
+
+.actions {
+  margin-top: 20px;
+  display: flex;
+}
+
+.actions .btn {
+  margin-right: 20px;
+}

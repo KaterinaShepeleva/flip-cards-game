@@ -1,0 +1,34 @@
+:root {
+  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.87);
+  background-color: #242424;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.btn {
+  display: block;
+  padding: 10px 15px;
+  border-radius: 8px;
+  border: 1px solid #fff;
+  background: rgba(255, 255, 255, 0);
+  color: inherit;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.btn:hover,
+.btn:active {
+  background: rgba(255, 255, 255, 0.2);
+}
+
