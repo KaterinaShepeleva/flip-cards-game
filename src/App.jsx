@@ -19,7 +19,6 @@ function App() {
     const setOpenedCards = useCardStore((state) => state.setOpenedCards);
     
     const openCard = (currentCardPos) => {
-        console.log('currentCardPos', currentCardPos);
         const cardsUpdated = [...cards];
         
         if (
@@ -37,8 +36,10 @@ function App() {
             && !openedCardsPair.includes(currentCardPos)
         ) {
             // close the previous two cards
-            clearTimeout(flipCardTimeoutId);
-            closeUnmatchingCards();
+            if (flipCardTimeoutId != null) {
+                clearTimeout(flipCardTimeoutId);
+                closeUnmatchingCards();
+            }
             
             // open the card that was clicked
             openCard(currentCardPos);
@@ -65,7 +66,7 @@ function App() {
             }
         }
         
-        setOpenedCards(openedCardsPair);
+        setOpenedCards([...openedCardsPair]);
         setCards(cardsUpdated);
     };
     
