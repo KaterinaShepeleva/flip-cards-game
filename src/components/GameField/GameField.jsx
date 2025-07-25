@@ -5,7 +5,6 @@ import './GameField.css';
 function GameField(props) {
     const { openCard } = props;
     const cards = useCardStore((state) => state.cards);
-    console.log('game field', cards);
     
     const cardItems = cards.map((card) =>
         <Card

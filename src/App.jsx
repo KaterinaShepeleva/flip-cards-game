@@ -14,32 +14,30 @@ function App() {
     const cards = useCardStore((state) => state.cards);
     const setCards = useCardStore((state) => state.setCards);
     const regenerateAllCards = useCardStore((state) => state.startNewGame);
-    
-    let openedCardsPair = useCardStore((state) => state.openedCardsPair);
     const setOpenedCards = useCardStore((state) => state.setOpenedCards);
     
     const openCard = (currentCardPos) => {
         const cardsUpdated = [...cards];
+        // we need correct value immediately after store update
+        let openedCards = [...useCardStore.getState().openedCardsPair];
         
         if (
             cards[currentCardPos].stayOpen
             // if clicked on the same card that was previously opened
-            || currentCardPos === openedCardsPair[0]
+            || currentCardPos === openedCards[0]
         ) {
             return;
         }
         
         // if clicked on the third card while other two were open
         if (
-            openedCardsPair[0] != null
-            && openedCardsPair[1] != null
-            && !openedCardsPair.includes(currentCardPos)
+            openedCards[0] != null
+            && openedCards[1] != null
+            && !openedCards.includes(currentCardPos)
         ) {
             // close the previous two cards
-            if (flipCardTimeoutId != null) {
-                clearTimeout(flipCardTimeoutId);
-                closeUnmatchingCards();
-            }
+            clearTimeout(flipCardTimeoutId);
+            closeUnmatchingCards();
             
             // open the card that was clicked
             openCard(currentCardPos);
@@ -48,32 +46,35 @@ function App() {
         
         cardsUpdated[currentCardPos].flipped = true;
         
-        if (openedCardsPair[0] == null) {
+        if (openedCards[0] == null) {
             // if the first card of pair should be open
-            openedCardsPair[0] = currentCardPos;
+            openedCards[0] = currentCardPos;
         } else {
             // if needed to flip the second card of a pair
-            if (cards[currentCardPos].content === cards[openedCardsPair[0]].content) {
+            if (cards[currentCardPos].content === cards[openedCards[0]].content) {
                 // leave both cards open if content of the flipped cards is equal
                 cardsUpdated[currentCardPos].stayOpen = true;
-                cardsUpdated[openedCardsPair[0]].stayOpen = true;
+                cardsUpdated[openedCards[0]].stayOpen = true;
                 
-                openedCardsPair = [null, null];
+                openedCards = [null, null];
             } else {
                 // else close both cards on timeout
-                openedCardsPair[1] = currentCardPos;
+                openedCards[1] = currentCardPos;
+                
                 flipCardTimeoutId = setTimeout(closeUnmatchingCards, CARD_FLIP_TIMEOUT);
             }
         }
         
-        setOpenedCards([...openedCardsPair]);
+        setOpenedCards(openedCards);
         setCards(cardsUpdated);
     };
     
     const closeUnmatchingCards = () => {
         const cardsUpdated = [...cards];
+        // get value immediately after store update
+        const openedCards = useCardStore.getState().openedCardsPair;
         
-        openedCardsPair.forEach((position) => {
+        openedCards.forEach((position) => {
             if (position != null) {
                 cardsUpdated[position].flipped = false;
             }
