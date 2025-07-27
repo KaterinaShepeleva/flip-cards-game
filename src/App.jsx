@@ -1,25 +1,29 @@
 import { CARD_ANIMATION_DURATION, CARD_FLIP_TIMEOUT } from './constants.js';
-import { useCardStore } from '/src/store.js';
+import { useStore } from '/src/store.js';
 
+import './App.css';
 import GameField from './components/GameField/GameField.jsx';
 import RestartButton from './components/RestartButton/RestartButton.jsx';
 import StartNewGameButton from './components/StartNewGameButton/StartNewGameButton.jsx';
-import './App.css';
 import SettingsButton from './components/SettingsButton/SettingsButton.jsx';
+import SettingsModal from './components/SettingsModal/SettingsModal.jsx';
 
 // timeout for closing of flipped cards
 let flipCardTimeoutId = null;
 
 function App() {
-    const cards = useCardStore((state) => state.cards);
-    const setCards = useCardStore((state) => state.setCards);
-    const regenerateAllCards = useCardStore((state) => state.startNewGame);
-    const setOpenedCards = useCardStore((state) => state.setOpenedCards);
+    const cards = useStore((state) => state.cards);
+    const setCards = useStore((state) => state.setCards);
+    const regenerateAllCards = useStore((state) => state.startNewGame);
+    const setOpenedCards = useStore((state) => state.setOpenedCards);
+    
+    const isModalOpen = useStore((state) => state.isModalOpen);
+    const setModalOpen = useStore((state) => state.setModalOpen);
     
     const openCard = (currentCardPos) => {
         const cardsUpdated = [...cards];
         // we need correct value immediately after store update
-        let openedCards = [...useCardStore.getState().openedCardsPair];
+        let openedCards = [...useStore.getState().openedCardsPair];
         
         if (
             cards[currentCardPos].stayOpen
@@ -72,7 +76,7 @@ function App() {
     const closeUnmatchingCards = () => {
         const cardsUpdated = [...cards];
         // get value immediately after store update
-        const openedCards = useCardStore.getState().openedCardsPair;
+        const openedCards = useStore.getState().openedCardsPair;
         
         openedCards.forEach((position) => {
             if (position != null) {
@@ -97,9 +101,6 @@ function App() {
             stayOpen: false,
         })));
         
-        // TODO: можно сделать анимацию, когда в начале новой игры
-        //  карточки переворачиваются последовательно слева направо
-        
         // replace the initial card data if starting new game
         if (!restartOnly) {
             setTimeout(regenerateAllCards, CARD_ANIMATION_DURATION);
@@ -107,11 +108,17 @@ function App() {
     };
     
     const openSettings = () => {
-        // display modal
+        setModalOpen(true);
     };
+    
+    const closeSettings = () => {
+        setModalOpen(false);
+    }
     
     return (
         <div className="game-container">
+            <h1>Flip Cards Game</h1>
+            
             <GameField openCard={openCard}/>
             
             <div className="actions">
@@ -119,6 +126,11 @@ function App() {
                 <StartNewGameButton startNewGame={() => startNewGame(false)}/>
                 <SettingsButton openSettings={openSettings}/>
             </div>
+            
+            <SettingsModal
+                isOpen={isModalOpen}
+                onClose={closeSettings}
+            />
         </div>
     );
 }

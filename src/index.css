@@ -1,9 +1,11 @@
 :root {
+  --bg-color: #242424;
+
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
+  background-color: var(--bg-color);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
@@ -16,6 +18,22 @@
   box-sizing: border-box;
 }
 
+html,
+body {
+  min-height: 100vh;
+}
+
+body {
+  position: relative;
+}
+
+h1,
+h2 {
+  font-weight: bold;
+  user-select: none;
+  cursor: default;
+}
+
 .btn {
   display: block;
   padding: 10px 15px;
@@ -24,7 +42,9 @@
   background: rgba(255, 255, 255, 0);
   color: inherit;
   cursor: pointer;
+  user-select: none;
   font-size: 14px;
+  transition: background-color 0.2s;
 }
 
 .btn:hover,
