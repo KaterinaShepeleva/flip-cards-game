@@ -13,11 +13,11 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 75vw;
-    height: 75vh;
+    width: 60vw;
+    height: 60vh;
     background-color: var(--bg-color);
     box-shadow: 5px 5px 10px 0 rgba(0, 0, 0, 0.7);
-    padding: 20px;
+    padding: 30px;
 }
 
 .settings-modal-header {
@@ -39,5 +39,31 @@
     width: 36px;
     height: 36px;
     padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
+.settings-modal-header .close .icon {
+    width: 75%;
+    height: 75%;
+}
+
+.set-cards-range {
+    margin: 10px 0 15px;
+}
+
+.set-cards-range .range-wrap {
+    display: flex;
+    align-items: center;
+    padding: 8px 0 5px;
+}
+
+.set-cards-range .range-value {
+    margin-left: 10px;
+    line-height: 1;
+}
+
+.set-cards-range input {
+    width: 210px;
+}

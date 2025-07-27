@@ -1,6 +1,7 @@
 import { useStore } from '/src/store.js';
-import Card from '/src/components/Card/Card.jsx';
+
 import './GameField.css';
+import Card from '/src/components/Card/Card.jsx';
 
 function GameField(props) {
     const { openCard } = props;

@@ -19,6 +19,8 @@ function App() {
     
     const isModalOpen = useStore((state) => state.isModalOpen);
     const setModalOpen = useStore((state) => state.setModalOpen);
+    const currentCardsCount = useStore((state) => state.currentCardsCount);
+    const setCurrentCardsCount = useStore((state) => state.setCurrentCardsCount);
     
     const openCard = (currentCardPos) => {
         const cardsUpdated = [...cards];
@@ -115,6 +117,15 @@ function App() {
         setModalOpen(false);
     }
     
+    const applySettings = (newCardsCount) => {
+        if (currentCardsCount === newCardsCount) {
+            return;
+        }
+        
+        setCurrentCardsCount(newCardsCount);
+        regenerateAllCards();
+    }
+    
     return (
         <div className="game-container">
             <h1>Flip Cards Game</h1>
@@ -130,6 +141,7 @@ function App() {
             <SettingsModal
                 isOpen={isModalOpen}
                 closeModal={closeSettings}
+                onAfterClose={applySettings}
             />
         </div>
     );
