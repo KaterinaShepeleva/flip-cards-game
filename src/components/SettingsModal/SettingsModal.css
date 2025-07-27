@@ -8,10 +8,6 @@
     backdrop-filter: blur(5px);
 }
 
-.settings-modal-overlay.hidden {
-    display: none;
-}
-
 .settings-modal {
     position: absolute;
     top: 50%;

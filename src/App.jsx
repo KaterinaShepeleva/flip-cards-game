@@ -129,7 +129,7 @@ function App() {
             
             <SettingsModal
                 isOpen={isModalOpen}
-                onClose={closeSettings}
+                closeModal={closeSettings}
             />
         </div>
     );

@@ -1,31 +1,35 @@
-import { createPortal } from 'react-dom';
-import { SETTINGS_MODAL_ROOT } from '/src/constants';
+import Modal from 'react-modal';
 
 import './SettingsModal.css'
 
+Modal.setAppElement('#root');
+
 function SettingsModal(props) {
-    const { isOpen, onClose } = props;
+    const { isOpen, closeModal } = props;
     
-    const rootClassName = ['settings-modal-overlay', isOpen ? '' : 'hidden'].join(' ');
-    
-    return createPortal((
-        <div className={rootClassName}>
-            <div className="settings-modal">
-                <div className="settings-modal-header">
-                    <h2 className="heading">Settings</h2>
-                    <button
-                        type="button"
-                        className="btn close"
-                        onClick={onClose}
-                    >
-                        ×
-                    </button>
-                </div>
-                
-                <p>settings content</p>
+    return (
+        <Modal
+            isOpen={isOpen}
+            onRequestClose={closeModal}
+            shouldCloseOnOverlayClick={false}
+            overlayClassName="settings-modal-overlay"
+            className="settings-modal"
+            id="settings"
+        >
+            <div className="settings-modal-header">
+                <h2 className="heading">Settings</h2>
+                <button
+                    type="button"
+                    className="btn close"
+                    onClick={closeModal}
+                >
+                    ×
+                </button>
             </div>
-        </div>
-    ), document.getElementById(SETTINGS_MODAL_ROOT))
+            
+            <p>settings content</p>
+        </Modal>
+    )
 }
 
 export default SettingsModal;

@@ -19,5 +19,3 @@ export const CARD_CONTENT_SET = [
     '🧩',
     '🍰',
 ];
-
-export const SETTINGS_MODAL_ROOT = 'settings-modal';
