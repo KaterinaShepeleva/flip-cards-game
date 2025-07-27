@@ -1,6 +1,5 @@
-import { useState } from 'react';
 import { CARD_ANIMATION_DURATION, CARD_FLIP_TIMEOUT } from './constants.js';
-import { generateGameField } from './utilities.js';
+import { useCardStore } from '/src/store.js';
 
 import GameField from './components/GameField/GameField.jsx';
 import RestartButton from './components/RestartButton/RestartButton.jsx';
@@ -8,31 +7,33 @@ import StartNewGameButton from './components/StartNewGameButton/StartNewGameButt
 import './App.css';
 import SettingsButton from './components/SettingsButton/SettingsButton.jsx';
 
-const GAME_FIELD_LENGTH = 8;
-const initialGameField = generateGameField(GAME_FIELD_LENGTH);
-
-// stores two cards that were already flipped
-let openedCardsPair = [null, null];
 // timeout for closing of flipped cards
 let flipCardTimeoutId = null;
 
 function App() {
-    const [field, setField] = useState([...initialGameField]);
+    const cards = useCardStore((state) => state.cards);
+    const setCards = useCardStore((state) => state.setCards);
+    const regenerateAllCards = useCardStore((state) => state.startNewGame);
+    const setOpenedCards = useCardStore((state) => state.setOpenedCards);
     
     const openCard = (currentCardPos) => {
+        const cardsUpdated = [...cards];
+        // we need correct value immediately after store update
+        let openedCards = [...useCardStore.getState().openedCardsPair];
+        
         if (
-            field[currentCardPos].stayOpen
+            cards[currentCardPos].stayOpen
             // if clicked on the same card that was previously opened
-            || currentCardPos === openedCardsPair[0]
+            || currentCardPos === openedCards[0]
         ) {
             return;
         }
         
         // if clicked on the third card while other two were open
         if (
-            openedCardsPair[0] != null
-            && openedCardsPair[1] != null
-            && !openedCardsPair.includes(currentCardPos)
+            openedCards[0] != null
+            && openedCards[1] != null
+            && !openedCards.includes(currentCardPos)
         ) {
             // close the previous two cards
             clearTimeout(flipCardTimeoutId);
@@ -43,61 +44,65 @@ function App() {
             return;
         }
         
-        field[currentCardPos].flipped = true;
+        cardsUpdated[currentCardPos].flipped = true;
         
-        if (openedCardsPair[0] == null) {
+        if (openedCards[0] == null) {
             // if the first card of pair should be open
-            openedCardsPair[0] = currentCardPos;
+            openedCards[0] = currentCardPos;
         } else {
-            // if needed to flip the second card from of a pair
-            if (field[currentCardPos].content === field[openedCardsPair[0]].content) {
+            // if needed to flip the second card of a pair
+            if (cards[currentCardPos].content === cards[openedCards[0]].content) {
                 // leave both cards open if content of the flipped cards is equal
-                field[currentCardPos].stayOpen = true;
-                field[openedCardsPair[0]].stayOpen = true;
+                cardsUpdated[currentCardPos].stayOpen = true;
+                cardsUpdated[openedCards[0]].stayOpen = true;
                 
-                openedCardsPair[0] = null;
-                openedCardsPair[1] = null;
+                openedCards = [null, null];
             } else {
                 // else close both cards on timeout
-                openedCardsPair[1] = currentCardPos;
+                openedCards[1] = currentCardPos;
+                
                 flipCardTimeoutId = setTimeout(closeUnmatchingCards, CARD_FLIP_TIMEOUT);
             }
         }
         
-        setField([...field]);
+        setOpenedCards(openedCards);
+        setCards(cardsUpdated);
     };
     
     const closeUnmatchingCards = () => {
-        openedCardsPair.forEach((position) => {
+        const cardsUpdated = [...cards];
+        // get value immediately after store update
+        const openedCards = useCardStore.getState().openedCardsPair;
+        
+        openedCards.forEach((position) => {
             if (position != null) {
-                field[position].flipped = false;
+                cardsUpdated[position].flipped = false;
             }
         });
         
-        openedCardsPair = [null, null];
-        setField([...field]);
+        setOpenedCards([null, null]);
+        setCards(cardsUpdated);
     };
     
     const startNewGame = (restartOnly) => {
         // close all opened cards first
         if (flipCardTimeoutId != null) {
             clearTimeout(flipCardTimeoutId);
-            openedCardsPair = [null, null];
+            setOpenedCards([null, null]);
         }
         
-        setField(field.map((card) => ({
+        setCards(cards.map((card) => ({
             ...card,
             flipped: false,
             stayOpen: false,
         })));
         
-        // TODO: Слава предложил сделать анимацию, когда в начале новой игры
+        // TODO: можно сделать анимацию, когда в начале новой игры
         //  карточки переворачиваются последовательно слева направо
+        
         // replace the initial card data if starting new game
         if (!restartOnly) {
-            setTimeout(() => {
-                setField(generateGameField(GAME_FIELD_LENGTH));
-            }, CARD_ANIMATION_DURATION);
+            setTimeout(regenerateAllCards, CARD_ANIMATION_DURATION);
         }
     };
     
@@ -107,7 +112,7 @@ function App() {
     
     return (
         <div className="game-container">
-            <GameField field={field} openCard={openCard}/>
+            <GameField openCard={openCard}/>
             
             <div className="actions">
                 <RestartButton restart={() => startNewGame(true)}/>
