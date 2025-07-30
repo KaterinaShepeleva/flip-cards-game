@@ -1,12 +1,18 @@
 import { create } from 'zustand';
+
 import { generateGameField } from './utilities.js';
-import { CARDS_COUNT_DEFAULT } from './constants.js';
+import {
+    CARDS_COUNT_DEFAULT,
+    CARD_TIMEOUT_DEFAULT,
+} from './constants.js';
 
 const createSettingsStore = (set) => ({
     isModalOpen: false,
     setModalOpen: (isModalOpen) => set(() => ({ isModalOpen })),
     currentCardsCount: CARDS_COUNT_DEFAULT,
     setCurrentCardsCount: (currentCardsCount) => set(() => ({ currentCardsCount })),
+    cardTimeout: CARD_TIMEOUT_DEFAULT,
+    setCardTimeout: (cardTimeout) => set(() => ({ cardTimeout })),
 });
 
 const createCardStore = (set) => ({

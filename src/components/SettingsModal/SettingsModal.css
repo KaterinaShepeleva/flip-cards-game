@@ -23,7 +23,7 @@
 .settings-modal-header {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 }
 
 .settings-modal-header .heading {
@@ -66,4 +66,22 @@
 
 .set-cards-range input {
     width: 210px;
+}
+
+.set-cards-timeout .timeout-radio-group {
+    display: flex;
+    align-items: center;
+    padding: 5px 0;
+}
+
+.set-cards-timeout .timeout-option-label {
+    padding-left: 6px;
+    user-select: none;
+}
+
+.set-cards-timeout .timeout-option {
+    margin-right: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
 }

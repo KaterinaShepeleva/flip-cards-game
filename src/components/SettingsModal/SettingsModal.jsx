@@ -2,15 +2,23 @@ import { useState } from 'react';
 import Modal from 'react-modal';
 
 import './SettingsModal.css';
-import { CARDS_COUNT_MAX, CARDS_COUNT_MIN } from '/src/constants.js';
+import {
+    CARDS_COUNT_MAX,
+    CARDS_COUNT_MIN,
+    TIMEOUT_RADIO_NAME,
+    TIMEOUT_SETTINGS,
+} from '/src/constants.js';
 import { useStore } from '/src/store.js';
-import closeIcon from '/src/assets/close-icon.svg';
+import SettingsModalHeader from './SettingsModalHeader.jsx';
 
 Modal.setAppElement('#root');
 
 function SettingsModal(props) {
     const { isOpen, closeModal, onAfterClose } = props;
     const [cardsCount, setCardsCount] = useState(useStore((state) => state.currentCardsCount));
+    
+    const savedCardTimeout = useStore((state) => state.cardTimeout);
+    const [timeout, setNewTimeout] = useState(savedCardTimeout);
     
     const setRangeCount = (event) => {
         if (event.target.value === cardsCount) {
@@ -20,34 +28,31 @@ function SettingsModal(props) {
         setCardsCount(event.target.value);
     };
     
-    // TODO: add ModalHeader component
-    // TODO: add timeout setting as radio buttons or range (preferably), or texfield for number
+    const changeTimeout = (event) => {
+        const newTimeout = Number(event.target.value);
+        
+        if (Number.isNaN(newTimeout)) {
+            return;
+        }
+        
+        setNewTimeout(newTimeout);
+    }
+    
+    const applyChanges = () => {
+        onAfterClose(cardsCount, timeout);
+    }
     
     return (
         <Modal
             isOpen={isOpen}
             onRequestClose={closeModal}
-            onAfterClose={() => onAfterClose(cardsCount)}
+            onAfterClose={applyChanges}
             shouldCloseOnOverlayClick={false}
             overlayClassName="settings-modal-overlay"
             className="settings-modal"
             id="settings"
         >
-            <div className="settings-modal-header">
-                <h2 className="heading">Settings</h2>
-                <button
-                    type="button"
-                    className="btn close"
-                    onClick={closeModal}
-                >
-                    <img
-                        className="icon"
-                        src={closeIcon}
-                        alt="Close Modal"
-                        draggable="false"
-                    />
-                </button>
-            </div>
+            <SettingsModalHeader closeModal={closeModal}/>
             
             <div className="settings-modal-body">
                 <div className="set-cards-range">
@@ -69,6 +74,28 @@ function SettingsModal(props) {
                             </span>
                         </div>
                     </label>
+                </div>
+                
+                <div className="set-cards-timeout">
+                    <span className="timeout-label">
+                        Timeout duration (delay before the pair of cards automatically closes):
+                    </span>
+                    <div className="timeout-radio-group">
+                        {
+                            TIMEOUT_SETTINGS.map((item) => (
+                                <label className="timeout-option" key={item.value}>
+                                    <input
+                                        type="radio"
+                                        name={TIMEOUT_RADIO_NAME}
+                                        value={item.value}
+                                        checked={timeout === item.value}
+                                        onChange={changeTimeout}
+                                    />
+                                    <span className="timeout-option-label">{item.label}</span>
+                                </label>
+                            ))
+                        }
+                    </div>
                 </div>
             </div>
         </Modal>

@@ -1,4 +1,4 @@
-import { CARD_ANIMATION_DURATION, CARD_FLIP_TIMEOUT } from './constants.js';
+import { CARD_ANIMATION_DURATION } from './constants.js';
 import { useStore } from '/src/store.js';
 
 import './App.css';
@@ -21,6 +21,8 @@ function App() {
     const setModalOpen = useStore((state) => state.setModalOpen);
     const currentCardsCount = useStore((state) => state.currentCardsCount);
     const setCurrentCardsCount = useStore((state) => state.setCurrentCardsCount);
+    const cardTimeout = useStore((state) => state.cardTimeout);
+    const setCardTimeout = useStore((state) => state.setCardTimeout);
     
     const openCard = (currentCardPos) => {
         const cardsUpdated = [...cards];
@@ -67,7 +69,7 @@ function App() {
                 // else close both cards on timeout
                 openedCards[1] = currentCardPos;
                 
-                flipCardTimeoutId = setTimeout(closeUnmatchingCards, CARD_FLIP_TIMEOUT);
+                flipCardTimeoutId = setTimeout(closeUnmatchingCards, cardTimeout);
             }
         }
         
@@ -117,12 +119,14 @@ function App() {
         setModalOpen(false);
     }
     
-    const applySettings = (newCardsCount) => {
-        if (currentCardsCount === newCardsCount) {
+    const applySettings = (newCardsCount, newTimeout) => {
+        // do nothing if settings didn't change
+        if (currentCardsCount === newCardsCount && newTimeout === cardTimeout) {
             return;
         }
         
         setCurrentCardsCount(newCardsCount);
+        setCardTimeout(newTimeout);
         regenerateAllCards();
     }
     
