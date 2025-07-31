@@ -4,6 +4,7 @@ import { useStore } from '/src/store.js';
 import './App.css';
 import GameField from './components/GameField/GameField.jsx';
 import RestartButton from './components/RestartButton/RestartButton.jsx';
+import MovesCount from './components/MovesCount/MovesCount.jsx';
 import StartNewGameButton from './components/StartNewGameButton/StartNewGameButton.jsx';
 import SettingsButton from './components/SettingsButton/SettingsButton.jsx';
 import SettingsModal from './components/SettingsModal/SettingsModal.jsx';
@@ -14,8 +15,10 @@ let flipCardTimeoutId = null;
 function App() {
     const cards = useStore((state) => state.cards);
     const setCards = useStore((state) => state.setCards);
-    const regenerateAllCards = useStore((state) => state.startNewGame);
+    const generateAllCards = useStore((state) => state.generateAllCards);
     const setOpenedCards = useStore((state) => state.setOpenedCards);
+    const incrementMovesCount = useStore((state) => state.incrementMovesCount);
+    const clearMovesCount = useStore((state) => state.clearMovesCount);
     
     const isModalOpen = useStore((state) => state.isModalOpen);
     const setModalOpen = useStore((state) => state.setModalOpen);
@@ -59,6 +62,9 @@ function App() {
             openedCards[0] = currentCardPos;
         } else {
             // if needed to flip the second card of a pair
+            // count this move anyway
+            incrementMovesCount();
+            
             if (cards[currentCardPos].content === cards[openedCards[0]].content) {
                 // leave both cards open if content of the flipped cards is equal
                 cardsUpdated[currentCardPos].stayOpen = true;
@@ -104,10 +110,11 @@ function App() {
             flipped: false,
             stayOpen: false,
         })));
+        clearMovesCount();
         
         // replace the initial card data if starting new game
         if (!restartOnly) {
-            setTimeout(regenerateAllCards, CARD_ANIMATION_DURATION);
+            setTimeout(generateAllCards, CARD_ANIMATION_DURATION);
         }
     };
     
@@ -127,7 +134,9 @@ function App() {
         
         setCurrentCardsCount(newCardsCount);
         setCardTimeout(newTimeout);
-        regenerateAllCards();
+        
+        clearMovesCount();
+        generateAllCards();
     }
     
     return (
@@ -137,6 +146,7 @@ function App() {
             <GameField openCard={openCard}/>
             
             <div className="actions">
+                <MovesCount/>
                 <RestartButton restart={() => startNewGame(true)}/>
                 <StartNewGameButton startNewGame={() => startNewGame(false)}/>
                 <SettingsButton openSettings={openSettings}/>
