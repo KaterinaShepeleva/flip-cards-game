@@ -1,12 +1,29 @@
 import { create } from 'zustand';
+
 import { generateGameField } from './utilities.js';
+import {
+    CARDS_COUNT_DEFAULT,
+    CARD_TIMEOUT_DEFAULT,
+} from './constants.js';
 
-const GAME_FIELD_LENGTH = 8;
+const createSettingsStore = (set) => ({
+    isModalOpen: false,
+    setModalOpen: (isModalOpen) => set(() => ({ isModalOpen })),
+    currentCardsCount: CARDS_COUNT_DEFAULT,
+    setCurrentCardsCount: (currentCardsCount) => set(() => ({ currentCardsCount })),
+    cardTimeout: CARD_TIMEOUT_DEFAULT,
+    setCardTimeout: (cardTimeout) => set(() => ({ cardTimeout })),
+});
 
-export const useCardStore = create((set) => ({
-    cards: generateGameField(GAME_FIELD_LENGTH),
+const createCardStore = (set) => ({
+    cards: generateGameField(CARDS_COUNT_DEFAULT),
     setCards: (cards) => set(() => ({ cards })),
     openedCardsPair: [null, null], // stores two cards that were already flipped
     setOpenedCards: (openedCardsPair) => set(() => ({ openedCardsPair })),
-    startNewGame: () => set(() => ({ cards: generateGameField(GAME_FIELD_LENGTH) })),
+    startNewGame: () => set((state) => ({ cards: generateGameField(state.currentCardsCount) })),
+});
+
+export const useStore = create((...a) => ({
+    ...createCardStore(...a),
+    ...createSettingsStore(...a),
 }));

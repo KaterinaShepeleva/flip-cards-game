@@ -1,10 +1,11 @@
-import { useCardStore } from '/src/store.js';
-import Card from '/src/components/Card/Card.jsx';
+import { useStore } from '/src/store.js';
+
 import './GameField.css';
+import Card from '/src/components/Card/Card.jsx';
 
 function GameField(props) {
     const { openCard } = props;
-    const cards = useCardStore((state) => state.cards);
+    const cards = useStore((state) => state.cards);
     
     const cardItems = cards.map((card) =>
         <Card
