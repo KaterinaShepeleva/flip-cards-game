@@ -1,9 +1,11 @@
 import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
 import { generateGameField } from './utilities.js';
 import {
     CARDS_COUNT_DEFAULT,
     CARD_TIMEOUT_DEFAULT,
+    LOCAL_STORAGE_KEY,
 } from './constants.js';
 
 const createSettingsStore = (set) => ({
@@ -16,14 +18,33 @@ const createSettingsStore = (set) => ({
 });
 
 const createCardStore = (set) => ({
-    cards: generateGameField(CARDS_COUNT_DEFAULT),
+    cards: [],
     setCards: (cards) => set(() => ({ cards })),
     openedCardsPair: [null, null], // stores two cards that were already flipped
     setOpenedCards: (openedCardsPair) => set(() => ({ openedCardsPair })),
     startNewGame: () => set((state) => ({ cards: generateGameField(state.currentCardsCount) })),
 });
 
-export const useStore = create((...a) => ({
-    ...createCardStore(...a),
-    ...createSettingsStore(...a),
-}));
+export const useStore = create(
+    persist(
+        (...a) => ({
+            ...createCardStore(...a),
+            ...createSettingsStore(...a),
+        }),
+        {
+            name: LOCAL_STORAGE_KEY,
+            partialize: (state) => ({
+                currentCardsCount: state.currentCardsCount,
+                cardTimeout: state.cardTimeout,
+            }),
+            onRehydrateStorage: (state, error) => {
+                if (error) {
+                    console.log('Hydration error', error);
+                    return;
+                }
+                
+                return () => state.startNewGame();
+            }
+        },
+    ),
+);
