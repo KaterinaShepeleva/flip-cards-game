@@ -22,7 +22,10 @@ const createCardStore = (set) => ({
     setCards: (cards) => set(() => ({ cards })),
     openedCardsPair: [null, null], // stores two cards that were already flipped
     setOpenedCards: (openedCardsPair) => set(() => ({ openedCardsPair })),
-    startNewGame: () => set((state) => ({ cards: generateGameField(state.currentCardsCount) })),
+    generateAllCards: () => set((state) => ({ cards: generateGameField(state.currentCardsCount) })),
+    movesCount: 0,
+    incrementMovesCount: () => set((state) => ({ movesCount: state.movesCount + 1 })),
+    clearMovesCount: () => set(() => ({ movesCount: 0 })),
 });
 
 export const useStore = create(
@@ -43,7 +46,7 @@ export const useStore = create(
                     return;
                 }
                 
-                return () => state.startNewGame();
+                return () => state.generateAllCards();
             }
         },
     ),
