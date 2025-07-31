@@ -1,23 +1,28 @@
 .settings-modal-overlay {
-    position: absolute;
+    position: fixed;
     top: 0;
-    right: 0;
-    bottom: 0;
     left: 0;
+    width: 100vw;
+    height: 100vh;
     background-color: rgba(0, 0, 0, 0.5);
     backdrop-filter: blur(5px);
+}
+
+.ReactModal__Body--open {
+    overflow: hidden;
 }
 
 .settings-modal {
     position: absolute;
     top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 60vw;
-    height: 60vh;
+    left: 0;
+    transform: translate(0, -50%);
+    width: 100%;
+    max-width: 640px;
+    min-height: 45vh;
     background-color: var(--bg-color);
     box-shadow: 5px 5px 10px 0 rgba(0, 0, 0, 0.7);
-    padding: 30px;
+    padding: 20px 20px 30px;
 }
 
 .settings-modal-header {
@@ -71,7 +76,7 @@
 .set-cards-timeout .timeout-radio-group {
     display: flex;
     align-items: center;
-    padding: 5px 0;
+    padding: 8px 0;
 }
 
 .set-cards-timeout .timeout-option-label {
@@ -84,4 +89,28 @@
     cursor: pointer;
     display: flex;
     align-items: center;
+}
+
+@media (min-width: 576px) {
+    .settings-modal {
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 80vw;
+    }
+}
+
+@media (min-width: 768px) {
+    .settings-modal {
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 65vw;
+        padding: 30px 30px 40px;
+    }
+}
+
+@media (min-width: 1024px) {
+    .settings-modal {
+        width: 60vw;
+        min-height: 40vh;
+    }
 }

@@ -48,6 +48,7 @@ function SettingsModal(props) {
             onRequestClose={closeModal}
             onAfterClose={applyChanges}
             shouldCloseOnOverlayClick={false}
+            preventScroll={true}
             overlayClassName="settings-modal-overlay"
             className="settings-modal"
             id="settings"
