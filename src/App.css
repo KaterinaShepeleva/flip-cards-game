@@ -1,9 +1,8 @@
 #root {
-  max-width: 840px;
-  min-width: 360px;
+  max-width: 960px;
   width: 100%;
   margin: 0 auto;
-  padding: 20px 15px;
+  padding: 20px;
 }
 
 .actions {
@@ -17,15 +16,16 @@
   margin-top: 15px;
 }
 
-@media (min-width: 768px) {
+@media (min-width: 576px) {
   #root {
-    width: 80%;
+    padding: 30px;
   }
 }
 
-@media (min-width: 1024px) {
+@media (min-width: 768px) {
   #root {
-    width: 70%;
+    width: 80%;
+    padding: 30px 15px;
   }
 }
 

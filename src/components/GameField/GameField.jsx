@@ -18,9 +18,7 @@ function GameField(props) {
     );
     
     return (
-        <div className="game-field">
-            <div className="cards-list">{cardItems}</div>
-        </div>
+        <div className="cards-list">{cardItems}</div>
     );
 }
 

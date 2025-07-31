@@ -11,8 +11,12 @@ function Card(props) {
     return (
         <li className={cardClassName} onClick={flipCard}>
             <div className="card-inner">
-                <div className="card-front">{CARD_UNKNOWN}</div>
-                <div className="card-back">{content}</div>
+                <div className="card-front">
+                    <span>{CARD_UNKNOWN}</span>
+                </div>
+                <div className="card-back">
+                    <span>{content}</span>
+                </div>
             </div>
         </li>
     );
