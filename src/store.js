@@ -10,9 +10,12 @@ import {
 
 const createSettingsStore = (set) => ({
     isModalOpen: false,
-    setModalOpen: (isModalOpen) => set(() => ({ isModalOpen })),
+    openModal: () => set(() => ({ isModalOpen: true })),
+    closeModal: () => set(() => ({ isModalOpen: false })),
+    
     currentCardsCount: CARDS_COUNT_DEFAULT,
     setCurrentCardsCount: (currentCardsCount) => set(() => ({ currentCardsCount })),
+    
     cardTimeout: CARD_TIMEOUT_DEFAULT,
     setCardTimeout: (cardTimeout) => set(() => ({ cardTimeout })),
 });
@@ -20,9 +23,12 @@ const createSettingsStore = (set) => ({
 const createCardStore = (set) => ({
     cards: [],
     setCards: (cards) => set(() => ({ cards })),
+    generateAllCards: () => set((state) => ({ cards: generateGameField(state.currentCardsCount) })),
+    
     openedCardsPair: [null, null], // stores two cards that were already flipped
     setOpenedCards: (openedCardsPair) => set(() => ({ openedCardsPair })),
-    generateAllCards: () => set((state) => ({ cards: generateGameField(state.currentCardsCount) })),
+    clearOpenedCardsPair: () => set(() => ({ openedCardsPair: [null, null] })),
+    
     movesCount: 0,
     incrementMovesCount: () => set((state) => ({ movesCount: state.movesCount + 1 })),
     clearMovesCount: () => set(() => ({ movesCount: 0 })),

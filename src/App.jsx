@@ -16,16 +16,13 @@ function App() {
     const cards = useStore((state) => state.cards);
     const setCards = useStore((state) => state.setCards);
     const generateAllCards = useStore((state) => state.generateAllCards);
+    
     const setOpenedCards = useStore((state) => state.setOpenedCards);
+    const clearOpenedCardsPair = useStore((state) => state.clearOpenedCardsPair);
+    
     const incrementMovesCount = useStore((state) => state.incrementMovesCount);
     const clearMovesCount = useStore((state) => state.clearMovesCount);
-    
-    const isModalOpen = useStore((state) => state.isModalOpen);
-    const setModalOpen = useStore((state) => state.setModalOpen);
-    const currentCardsCount = useStore((state) => state.currentCardsCount);
-    const setCurrentCardsCount = useStore((state) => state.setCurrentCardsCount);
     const cardTimeout = useStore((state) => state.cardTimeout);
-    const setCardTimeout = useStore((state) => state.setCardTimeout);
     
     const openCard = (currentCardPos) => {
         const cardsUpdated = [...cards];
@@ -94,22 +91,23 @@ function App() {
             }
         });
         
-        setOpenedCards([null, null]);
+        clearOpenedCardsPair();
         setCards(cardsUpdated);
     };
     
     const startNewGame = (restartOnly) => {
-        // close all opened cards first
         if (flipCardTimeoutId != null) {
             clearTimeout(flipCardTimeoutId);
-            setOpenedCards([null, null]);
         }
         
+        // close all cards first
         setCards(cards.map((card) => ({
             ...card,
             flipped: false,
             stayOpen: false,
         })));
+        
+        clearOpenedCardsPair();
         clearMovesCount();
         
         // replace the initial card data if starting new game
@@ -117,27 +115,6 @@ function App() {
             setTimeout(generateAllCards, CARD_ANIMATION_DURATION);
         }
     };
-    
-    const openSettings = () => {
-        setModalOpen(true);
-    };
-    
-    const closeSettings = () => {
-        setModalOpen(false);
-    }
-    
-    const applySettings = (newCardsCount, newTimeout) => {
-        // do nothing if settings didn't change
-        if (currentCardsCount === newCardsCount && newTimeout === cardTimeout) {
-            return;
-        }
-        
-        setCurrentCardsCount(newCardsCount);
-        setCardTimeout(newTimeout);
-        
-        clearMovesCount();
-        generateAllCards();
-    }
     
     return (
         <div className="game-container">
@@ -149,14 +126,10 @@ function App() {
                 <MovesCount/>
                 <RestartButton restart={() => startNewGame(true)}/>
                 <StartNewGameButton startNewGame={() => startNewGame(false)}/>
-                <SettingsButton openSettings={openSettings}/>
+                <SettingsButton/>
             </div>
             
-            <SettingsModal
-                isOpen={isModalOpen}
-                closeModal={closeSettings}
-                onAfterClose={applySettings}
-            />
+            <SettingsModal/>
         </div>
     );
 }
