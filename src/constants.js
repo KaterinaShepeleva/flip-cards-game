@@ -1,3 +1,5 @@
+export const LOCAL_STORAGE_KEY = 'flip-cards-storage';
+
 export const CARDS_COUNT_MIN = 6;
 export const CARDS_COUNT_MAX = 24;
 export const CARDS_COUNT_DEFAULT = 8;
