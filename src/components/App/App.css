@@ -32,6 +32,6 @@
 @media (min-width: 1366px) {
   #root {
     width: 60%;
-    margin: 30px auto;
+    padding: 50px 15px;
   }
 }
