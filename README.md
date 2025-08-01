@@ -1,12 +1,25 @@
-# React + Vite
+# Flip Cards Game
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A simple card-matching game where the goal is to find pairs of identical cards. Player flips two cards at a time and try to remember their positions. If the cards match, they stay open; if not, they close after a short delay, and player needs to try again until there are no closed cards remaining on the field.
 
-Currently, two official plugins are available:
+**Features**
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- Adaptive layout (mobile, tablet, desktop);
+- Game keeps track of how many pairs of cards have been flipped;
+- User can customize the number of cards on the field (from 6 to 24) to adjust difficulty;
+- User can set the delay before unmatched cards close, allowing for easier or more challenging gameplay.
 
-## Expanding the ESLint configuration
+**Actions**
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+- Restart Game: closes all open cards without changing its content;
+- Start New Game: generates a new set of cards in a random order;
+- Settings: player can select the preferred difficulty level.
+
+You can try the game here: [click](https://katerinashepeleva.github.io/flip-cards/)
+
+## Project stack
+
+- HTML, CSS
+- JavaScript
+- React v.19.1.0
+- Zustand v.5.0.6 for state management
