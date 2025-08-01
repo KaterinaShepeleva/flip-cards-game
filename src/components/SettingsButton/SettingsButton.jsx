@@ -1,11 +1,13 @@
-function SettingsButton(props) {
-    const { openSettings } = props;
+import { useStore } from '/src/store.js';
+
+function SettingsButton() {
+    const openModal = useStore((state) => state.openModal);
     
     return (
         <button
             type="button"
             className="btn btn-settings"
-            onClick={openSettings}
+            onClick={openModal}
         >
             Settings
         </button>

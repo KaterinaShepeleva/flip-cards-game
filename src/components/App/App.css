@@ -1,5 +1,5 @@
 #root {
-  max-width: 960px;
+  max-width: 840px;
   width: 100%;
   margin: 0 auto;
   padding: 20px;
@@ -32,5 +32,6 @@
 @media (min-width: 1366px) {
   #root {
     width: 60%;
+    margin: 30px auto;
   }
 }
