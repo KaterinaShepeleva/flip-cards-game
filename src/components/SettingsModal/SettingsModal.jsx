@@ -45,7 +45,7 @@ function SettingsModal() {
         }
         
         setNewTimeout(newTimeout);
-    }
+    };
     
     const applySettings = () => {
         // do nothing if settings didn't change
@@ -64,7 +64,7 @@ function SettingsModal() {
         generateAllCards();
         
         closeModal();
-    }
+    };
     
     return (
         <Modal
@@ -105,20 +105,18 @@ function SettingsModal() {
                         Timeout duration (delay before the pair of cards automatically closes):
                     </span>
                     <div className="timeout-radio-group">
-                        {
-                            TIMEOUT_SETTINGS.map((item) => (
-                                <label className="timeout-option" key={item.value}>
-                                    <input
-                                        type="radio"
-                                        name={TIMEOUT_RADIO_NAME}
-                                        value={item.value}
-                                        checked={timeout === item.value}
-                                        onChange={changeTimeout}
-                                    />
-                                    <span className="timeout-option-label">{item.label}</span>
-                                </label>
-                            ))
-                        }
+                        {TIMEOUT_SETTINGS.map((item) => (
+                            <label className="timeout-option" key={item.value}>
+                                <input
+                                    type="radio"
+                                    name={TIMEOUT_RADIO_NAME}
+                                    value={item.value}
+                                    checked={timeout === item.value}
+                                    onChange={changeTimeout}
+                                />
+                                <span className="timeout-option-label">{item.label}</span>
+                            </label>
+                        ))}
                     </div>
                 </div>
             </div>
