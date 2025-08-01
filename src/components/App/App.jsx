@@ -1,13 +1,13 @@
-import { CARD_ANIMATION_DURATION } from './constants.js';
+import { CARD_ANIMATION_DURATION } from '/src/constants.js';
 import { useStore } from '/src/store.js';
 
 import './App.css';
-import GameField from './components/GameField/GameField.jsx';
-import RestartButton from './components/RestartButton/RestartButton.jsx';
-import MovesCount from './components/MovesCount/MovesCount.jsx';
-import StartNewGameButton from './components/StartNewGameButton/StartNewGameButton.jsx';
-import SettingsButton from './components/SettingsButton/SettingsButton.jsx';
-import SettingsModal from './components/SettingsModal/SettingsModal.jsx';
+import GameField from '/src/components/GameField/GameField.jsx';
+import RestartButton from '/src/components/RestartButton/RestartButton.jsx';
+import MovesCount from '/src/components/MovesCount/MovesCount.jsx';
+import StartNewGameButton from '/src/components/StartNewGameButton/StartNewGameButton.jsx';
+import SettingsButton from '/src/components/SettingsButton/SettingsButton.jsx';
+import SettingsModal from '/src/components/SettingsModal/SettingsModal.jsx';
 
 // timeout for closing of flipped cards
 window.flipCardTimeoutId = null;
