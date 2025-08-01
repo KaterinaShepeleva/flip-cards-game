@@ -5,9 +5,11 @@ A simple card-matching game where the goal is to find pairs of identical cards. 
 **Features**
 
 - Adaptive layout (mobile, tablet, desktop);
+- Card set is randomly generated for each game cycle;
 - Game keeps track of how many pairs of cards have been flipped;
 - User can customize the number of cards on the field (from 6 to 24) to adjust difficulty;
-- User can set the delay before unmatched cards close, allowing for easier or more challenging gameplay.
+- User can set the delay before unmatched cards close, allowing for easier or more challenging gameplay;
+- Applied settings are saved in `localStorage` and persist after refreshing the page.
 
 **Actions**
 
