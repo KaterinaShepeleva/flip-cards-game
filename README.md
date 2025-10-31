@@ -17,11 +17,11 @@ A simple card-matching game where the goal is to find pairs of identical cards. 
 - Start New Game: generates a new set of cards in a random order;
 - Settings: player can select the preferred difficulty level.
 
-You can try the game here: [click](https://katerinashepeleva.github.io/flip-cards/)
+You can try the game here: [katerinashepeleva.github.io/flip-cards](https://katerinashepeleva.github.io/flip-cards/)
 
 ## Project stack
 
 - HTML, CSS
 - JavaScript
-- React v.19.1.0
-- Zustand v.5.0.6 for state management
+- React v19
+- Zustand v5 for state management
